@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我的時間調整器</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .time-display {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #00FF00; /* 螢光綠，很有感 */
+        }
+        .status {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #aaaaaa;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 90%;
+        }
+        button {
+            padding: 20px 0;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 12px;
+            background-color: #333;
+            color: white;
+        }
+        button:active {
+            background-color: #555;
+            transform: scale(0.95);
+        }
+        .reset {
+            grid-column: span 3;
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="clock" class="time-display">00:00:00</div>
+    <div id="msg" class="status">目前系統時間</div>
+
+    <div class="grid">
+        <button onclick="change(1)">+1</button>
+        <button onclick="change(5)">+5</button>
+        <button onclick="change(10)">+10</button>
+        <button onclick="change(15)">+15</button>
+        <button onclick="change(30)">+30</button>
+        <button onclick="change(60)">+60</button>
+        <button class="reset" onclick="reset()">重設回現在時間</button>
+    </div>
+
+    <script>
+        let offset = 0;
+        function update() {
+            let d = new Date();
+            d.setMinutes(d.getMinutes() + offset);
+            document.getElementById('clock').innerText = d.toTimeString().split(' ')[0];
+        }
+        function change(m) {
+            offset += m;
+            document.getElementById('msg').innerText = "已手動增加 " + offset + " 分鐘";
+            update();
+        }
+        function reset() {
+            offset = 0;
+            document.getElementById('msg').innerText = "目前系統時間";
+            update();
+        }
+        setInterval(update, 1000);
+        update();
+    </script>
+</body>
+</html>
